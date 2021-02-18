@@ -38,7 +38,7 @@ extern __attribute__((weak)) void audio_eof_stream(const char*); // The webstrea
 #define AUDIO_PLAYLISTDATA   64
 #define AUDIO_SWM           128
 
-#define MAX_VOL             256
+#define MAX_VOL             255
 #define VOL_DIVIDE_SHIFT      8   // should be log_base2 of MAX_VOL
 
 //----------------------------------------------------------------------------------------------------------------------
