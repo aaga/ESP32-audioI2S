@@ -38,6 +38,9 @@ extern __attribute__((weak)) void audio_eof_stream(const char*); // The webstrea
 #define AUDIO_PLAYLISTDATA   64
 #define AUDIO_SWM           128
 
+#define MAX_VOL             256
+#define VOL_DIVIDE_SHIFT      8   // should be log_base2 of MAX_VOL
+
 //----------------------------------------------------------------------------------------------------------------------
 
 class AudioBuffer {
@@ -150,6 +153,8 @@ public:
     void setBalance(int8_t bal = 0);
     void setVolume(uint8_t vol);
     uint8_t getVolume();
+    void setDirectVolume(uint8_t vol);
+    uint8_t getDirectVolume();
     inline uint8_t getDatamode(){return m_datamode;}
     inline void setDatamode(uint8_t dm){m_datamode=dm;}
     inline uint32_t streamavail() {if(m_f_ssl==false) return client.available(); else return clientsecure.available();}
@@ -225,7 +230,7 @@ private:
     uint8_t         m_LRC=0;                        // Left/Right Clock
     uint8_t         m_DOUT=0;                       // Data Out
     int8_t          m_DIN=0;                        // Data In, can be negative if unused (I2S_PIN_NO_CHANGE is -1)
-    uint8_t         m_vol=64;                       // volume
+    uint8_t         m_vol=0;                       // volume
     uint8_t         m_bitsPerSample=16;             // bitsPerSample
     uint8_t         m_channels=2;
     uint8_t         m_i2s_num= I2S_NUM_0;           // I2S_NUM_0 or I2S_NUM_1
