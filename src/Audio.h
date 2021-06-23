@@ -29,6 +29,8 @@
 #include "FFat.h"
 #endif // SDFATFS_USED
 
+#define MAX_VOL             255
+#define VOL_DIVIDE_SHIFT      8   // should be log_base2 of MAX_VOL
 
 #ifdef SDFATFS_USED
 typedef File32 File;
@@ -166,6 +168,8 @@ public:
     void setBalance(int8_t bal = 0);
     void setVolume(uint8_t vol);
     uint8_t getVolume();
+    void setDirectVolume(uint8_t vol);
+    uint8_t getDirectVolume();
 
 
     uint32_t getFileSize();
@@ -323,7 +327,7 @@ private:
     int             m_controlCounter = 0;           // Status within readID3data() and readWaveHeader()
     int8_t          m_balance = 0;                  // -16 (mute left) ... +16 (mute right)
     uint8_t         m_ID3version=0;                 // revision, ID3 version
-    uint8_t         m_vol=64;                       // volume
+    uint8_t         m_vol=0;                       // volume
     uint8_t         m_bitsPerSample = 16;           // bitsPerSample
     uint8_t         m_channels=2;
     uint8_t         m_i2s_num = I2S_NUM_0;          // I2S_NUM_0 or I2S_NUM_1

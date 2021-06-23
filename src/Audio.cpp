@@ -3599,9 +3599,19 @@ uint8_t Audio::getVolume() {
     return m_vol;
 }
 //---------------------------------------------------------------------------------------------------------------------
+void Audio::setDirectVolume(uint8_t vol) {
+    if(vol > MAX_VOL) vol = MAX_VOL;
+    m_vol = vol;
+}
+//---------------------------------------------------------------------------------------------------------------------
+uint8_t Audio::getDirectVolume() {
+    return m_vol;
+}
+//---------------------------------------------------------------------------------------------------------------------
+
 int32_t Audio::Gain(int16_t s[2]) {
     int32_t v[2];
-    float step = (float)m_vol /64;
+    float step = (float)m_vol / MAX_VOL;
     uint8_t l = 0, r = 0;
 
     if(m_balance < 0){
@@ -3613,8 +3623,8 @@ int32_t Audio::Gain(int16_t s[2]) {
         r = (uint8_t)(step);
     }
 
-    v[LEFTCHANNEL] = (s[LEFTCHANNEL]  * (m_vol - l)) >> 6;
-    v[RIGHTCHANNEL]= (s[RIGHTCHANNEL] * (m_vol - r)) >> 6;
+    v[LEFTCHANNEL] = (s[LEFTCHANNEL]  * (m_vol - l)) >> VOL_DIVIDE_SHIFT;;
+    v[RIGHTCHANNEL]= (s[RIGHTCHANNEL] * (m_vol - r)) >> VOL_DIVIDE_SHIFT;;
 
     return (v[RIGHTCHANNEL] << 16) | (v[LEFTCHANNEL] & 0xffff);
 }
